@@ -17,3 +17,4 @@ public class OperationMathematique {
         return a;                    
     }
 }
+ 
