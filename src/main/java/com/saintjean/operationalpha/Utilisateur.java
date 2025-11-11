@@ -12,10 +12,8 @@ public class Utilisateur {
     private String ville;
     private double soldePersonnel;
 
-    // ✅ Liste statique pour stocker les utilisateurs
     public static ArrayList<Utilisateur> users = new ArrayList<>();
 
-    // ✅ Constructeur
     public Utilisateur(int id, String nom, int age, String email, String telephone, String ville, double soldePersonnel) {
         this.id = id;
         this.nom = nom;
@@ -83,16 +81,37 @@ public class Utilisateur {
         System.out.println("Aucun utilisateur trouvé avec l'ID " + id);
     }
     
-    public static double analyseSoldeGeneral() {
+
+    public static double analyseSoldeGeneral() throws NegativeGeneralBalanceException {
         double total = 0.0;
 
         for (Utilisateur u : users) {
             total += u.getSoldePersonnel();
         }
 
-        System.out.println("Solde général de tous les utilisateurs : " + total + " FCFA");
+        if (total < 0) {
+            throw new NegativeGeneralBalanceException("Solde général négatif : " + total + " FCFA");
+        }
+
+        System.out.println("💰 Solde général de tous les utilisateurs : " + total + " FCFA");
         return total;
     }
 
+    public static Utilisateur getUtilisateurLePlusRiche() {
+        if (users.isEmpty()) {
+            System.out.println("Aucun utilisateur enregistré.");
+            return null;
+        }
+
+        Utilisateur plusRiche = users.get(0);
+        for (Utilisateur u : users) {
+            if (u.getSoldePersonnel() > plusRiche.getSoldePersonnel()) {
+                plusRiche = u;
+            }
+        }
+
+        System.out.println("Utilisateur le plus riche : " + plusRiche.getNom() + " (" + plusRiche.getSoldePersonnel() + " FCFA)");
+        return plusRiche;
+    }
 
 }
