@@ -80,7 +80,19 @@ public class Utilisateur {
                 return;
             }
         }
-        System.out.println("⚠ Aucun utilisateur trouvé avec l'ID " + id);
+        System.out.println("Aucun utilisateur trouvé avec l'ID " + id);
     }
+    
+    public static double analyseSoldeGeneral() {
+        double total = 0.0;
+
+        for (Utilisateur u : users) {
+            total += u.getSoldePersonnel();
+        }
+
+        System.out.println("Solde général de tous les utilisateurs : " + total + " FCFA");
+        return total;
+    }
+
 
 }
