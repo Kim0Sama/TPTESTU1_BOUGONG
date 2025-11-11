@@ -80,7 +80,37 @@ public class Utilisateur {
                 return;
             }
         }
-        System.out.println(" Aucun utilisateur trouvé avec l'ID " + id);
+
+        System.out.println("Aucun utilisateur trouvé avec l'ID " + id);
+    }
+    
+
+    public static double analyseSoldeGeneral() throws NegativeGeneralBalanceException {
+        double total = 0.0;
+
+        for (Utilisateur u : users) {
+            total += u.getSoldePersonnel();
+        }
+
+        System.out.println("Solde général de tous les utilisateurs : " + total + " FCFA");
+        return total;
+    }
+
+    public static Utilisateur getUtilisateurLePlusRiche() {
+        if (users.isEmpty()) {
+            System.out.println("Aucun utilisateur enregistré.");
+            return null;
+        }
+
+        Utilisateur plusRiche = users.get(0);
+        for (Utilisateur u : users) {
+            if (u.getSoldePersonnel() > plusRiche.getSoldePersonnel()) {
+                plusRiche = u;
+            }
+        }
+
+        System.out.println("Utilisateur le plus riche : " + plusRiche.getNom() + " (" + plusRiche.getSoldePersonnel() + " FCFA)");
+        return plusRiche;
     }
 
     private static boolean validerEmail(String email) {

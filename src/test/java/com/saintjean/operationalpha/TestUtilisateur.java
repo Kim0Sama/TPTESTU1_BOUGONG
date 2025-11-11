@@ -97,4 +97,65 @@ public class TestUtilisateur {
         Utilisateur.afficher(404);
         assertTrue(outContent.toString().contains("Aucun utilisateur trouvé"));
     }
+    
+    @Test
+    void testAnalyseSoldeGeneralPositif() throws Exception {
+        Utilisateur u1 = new Utilisateur(1, "Biya", 25, "biya@cameroon.cm", "677001122", "Yaoundé", 75000.0);
+        Utilisateur u2 = new Utilisateur(2, "Ngono", 30, "ngono@douala.cm", "690112233", "Douala", 50000.0);
+        Utilisateur.ajouter(u1);
+        Utilisateur.ajouter(u2);
+
+        double total = Utilisateur.analyseSoldeGeneral();
+
+        assertEquals(125000.0, total);
+        assertTrue(outContent.toString().contains("💰 Solde général"));
+    }
+
+    @Test
+    void testAnalyseSoldeGeneralNegatif() throws Exception {
+        Utilisateur u1 = new Utilisateur(3, "Aboubakar", 28, "aboubakar@maroua.cm", "699223344", "Maroua", -30000.0);
+        Utilisateur u2 = new Utilisateur(4, "Tchatchoua", 32, "tchatchoua@bafoussam.cm", "691887766", "Bafoussam", -20000.0);
+        Utilisateur.ajouter(u1);
+        Utilisateur.ajouter(u2);
+
+        Exception exception = assertThrows(NegativeGeneralBalanceException.class, () -> {
+            Utilisateur.analyseSoldeGeneral();
+        });
+
+        assertTrue(exception.getMessage().contains("Solde général négatif"));
+    }
+
+    @Test
+    void testAnalyseSoldeGeneralVide() throws Exception {
+        double total = Utilisateur.analyseSoldeGeneral();
+        assertEquals(0.0, total);
+        assertTrue(outContent.toString().contains("Solde général"));
+    }
+
+    // -------------------- TESTS getUtilisateurLePlusRiche() --------------------
+
+    @Test
+    void testGetUtilisateurLePlusRiche() throws Exception {
+        Utilisateur u1 = new Utilisateur(5, "Ewane", 22, "ewane@ebolowa.cm", "670998877", "Ebolowa", 35000.0);
+        Utilisateur u2 = new Utilisateur(6, "Fonkoua", 27, "fonkoua@garoua.cm", "699887766", "Garoua", 64000.0);
+        Utilisateur u3 = new Utilisateur(7, "Mbah", 29, "mbah@bamenda.cm", "677221100", "Bamenda", 42000.0);
+
+        Utilisateur.ajouter(u1);
+        Utilisateur.ajouter(u2);
+        Utilisateur.ajouter(u3);
+
+        Utilisateur plusRiche = Utilisateur.getUtilisateurLePlusRiche();
+
+        assertNotNull(plusRiche);
+        assertEquals("Fonkoua", plusRiche.getNom());
+        assertEquals(64000.0, plusRiche.getSoldePersonnel());
+        assertTrue(outContent.toString().contains("👑 Utilisateur le plus riche"));
+    }
+
+    @Test
+    void testGetUtilisateurLePlusRicheListeVide() {
+        Utilisateur plusRiche = Utilisateur.getUtilisateurLePlusRiche();
+        assertNull(plusRiche);
+        assertTrue(outContent.toString().contains("Aucun utilisateur enregistré"));
+    }
 }
