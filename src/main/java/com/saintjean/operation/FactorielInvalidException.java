@@ -1,4 +1,4 @@
-package operation;
+package com.saintjean.operation;
 
 public class FactorielInvalidException extends Exception{
     private int n=0;
