@@ -52,12 +52,13 @@ class TestOperationMathematique {
 	}
 	
 	@Test
-	void TestFactorielle() throws FactorielInvalidException {
+	void TestFactorielle() throws IllegalParamISIException {
 		System.out.println("Test de la methode factorielle");
 		assertEquals(1, OperationMathematique.factorielle(0));
 		assertEquals(2, OperationMathematique.factorielle(2));
 		assertEquals(6, OperationMathematique.factorielle(3));
 		
-		assertThrows(FactorielInvalidException.class, () -> op.factorielle(-1));
+		assertThrows(IllegalParamISIException.class, () -> op.factorielle(-1));
+		assertThrows(IllegalParamISIException.class, () -> op.factorielle(-5));
 	}
 }
