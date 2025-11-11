@@ -12,10 +12,8 @@ public class Utilisateur {
     private String ville;
     private double soldePersonnel;
 
-    // ✅ Liste statique pour stocker les utilisateurs
     public static ArrayList<Utilisateur> users = new ArrayList<>();
 
-    // ✅ Constructeur
     public Utilisateur(int id, String nom, int age, String email, String telephone, String ville, double soldePersonnel) {
         this.id = id;
         this.nom = nom;
@@ -26,7 +24,6 @@ public class Utilisateur {
         this.soldePersonnel = soldePersonnel;
     }
 
-    // ✅ Getters et Setters
     public int getId() { return id; }
     public String getNom() { return nom; }
     public int getAge() { return age; }
@@ -42,14 +39,15 @@ public class Utilisateur {
     public void setVille(String ville) { this.ville = ville; }
     public void setSoldePersonnel(double soldePersonnel) { this.soldePersonnel = soldePersonnel; }
 
-    
-    public static void ajouter(Utilisateur user)  {
-        
+    public static void ajouter(Utilisateur user) throws EmailInvalidException {
+        if (!validerEmail(user.getEmail())) {
+            throw new EmailInvalidException();
+        }
         users.add(user);
-        System.out.println("✅ Utilisateur ajouté : " + user.getNom());
+        System.out.println(" Utilisateur ajouté : " + user.getNom());
     }
 
-    public static void supprimer(int id)  {
+    public static void supprimer(int id) throws SuppressionInvalidException {
         Utilisateur u = null;
         for (Utilisateur user : users) {
             if (user.getId() == id) {
@@ -57,16 +55,18 @@ public class Utilisateur {
                 break;
             }
         }
-
+        if (u == null) {
+            throw new SuppressionInvalidException();
+        }
         users.remove(u);
-        System.out.println("🗑 Utilisateur supprimé : " + u.getNom());
+        System.out.println(" Utilisateur supprimé : " + u.getNom());
     }
 
     public static void lister() {
         if (users.isEmpty()) {
             System.out.println("Aucun utilisateur enregistré.");
         } else {
-            System.out.println("📋 Liste des utilisateurs :");
+            System.out.println(" Liste des utilisateurs :");
             for (Utilisateur u : users) {
                 System.out.println(u);
             }
@@ -76,11 +76,16 @@ public class Utilisateur {
     public static void afficher(int id) {
         for (Utilisateur u : users) {
             if (u.getId() == id) {
-                System.out.println("👤 Détails utilisateur : " + u);
+                System.out.println(" Détails utilisateur : " + u);
                 return;
             }
         }
-        System.out.println("⚠ Aucun utilisateur trouvé avec l'ID " + id);
+        System.out.println(" Aucun utilisateur trouvé avec l'ID " + id);
+    }
+
+    private static boolean validerEmail(String email) {
+        String regex = "^[\\w-.]+@[\\w-]+\\.[a-zA-Z]{2,}$";
+        return Pattern.matches(regex, email);
     }
 
 }
