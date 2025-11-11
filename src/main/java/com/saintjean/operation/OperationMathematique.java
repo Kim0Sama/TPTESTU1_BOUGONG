@@ -1,5 +1,7 @@
 package com.saintjean.operation;
 
+import java.util.Arrays;
+
 public class OperationMathematique {
 
 	public static boolean estPositif(int nombre) {
@@ -16,4 +18,13 @@ public class OperationMathematique {
         }
         return a;                    
     }
+	
+	public static int[] trier(int[] listes) {
+		Arrays.sort(listes);
+		return listes;
+	}
+	
+	public static double maxNumba(double[] valeurs) {
+		return Arrays.stream(valeurs).max().getAsDouble();
+	}
 }
