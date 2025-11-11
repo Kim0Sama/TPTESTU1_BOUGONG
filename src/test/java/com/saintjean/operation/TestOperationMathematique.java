@@ -2,11 +2,15 @@ package com.saintjean.operation;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.stream.Stream;
+
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 class TestOperationMathematique {
 	
@@ -28,8 +32,22 @@ class TestOperationMathematique {
 	void tearDown() throws Exception {
 	}
 
+
+	static Stream<org.junit.jupiter.params.provider.Arguments> fournirTableaux(){
+		return Stream.of(
+				org.junit.jupiter.params.provider.Arguments.of(new int[] {5,2,1}, new int[] {1,2,5}),
+				org.junit.jupiter.params.provider.Arguments.of(new int[] {6,9,8}, new int[] {6,8,9}),
+				org.junit.jupiter.params.provider.Arguments.of(new int[] {15,20,1}, new int[] {1,15,20})
+				);
+	}
+	
+	@ParameterizedTest
+	@MethodSource("fournirTableaux")
+	void testTrier(int[] input, int[] expected) {
+		assertArrayEquals(expected, op.trier(input));
+	}
 	@Test
-	void TestestPositifi() {
+	void TestestPositif() {
 		assertTrue(OperationMathematique.estPositif(2));
 	}
 	

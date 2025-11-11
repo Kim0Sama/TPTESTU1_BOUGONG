@@ -6,3 +6,4 @@ public class FactorielInvalidException extends Exception{
         super (message);
     }
 }
+ 
